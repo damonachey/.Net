@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Drag and Drop Demo</title>
+    <link href="../CardLibrary/Styles/card.css" rel="stylesheet" />
+    <link href="Styles/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="table" class="table"></div>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="../CardLibrary/Scripts/Card.js"></script>
+    <script src="../CardLibrary/Scripts/Deck.js"></script>
+    <script src="Scripts/Klondike.js"></script>
+
+    <script>
+        new DragAndDrop()
+            .start('#table');
+    </script>
+</body>
+</html>
