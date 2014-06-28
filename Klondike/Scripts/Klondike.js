@@ -277,7 +277,7 @@
         };
     };
 
-    ns.DragAndDrop = function () {
+    ns.Klondike = function () {
         var model = new Model();
         var view = new View();
         var count = 0;
