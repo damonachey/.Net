@@ -12,18 +12,18 @@
         var foundationCount = 4;
 
         self.deck;
-        self.waste = []; //[new CardLibrary.Card('2', 'S'), new CardLibrary.Card('A', 'S')];
+        self.waste = [];
         self.foundations = [];
         self.piles = [];
 
         self.dealPiles = function () {
-            for (var order = 0; order < self.piles.length; order++) {
-                for (var pile = order; pile < self.piles.length; pile++) {
+            for (var row = 0; row < self.piles.length; row++) {
+                for (var pile = row; pile < self.piles.length; pile++) {
                     var card = self.deck.draw();
 
-                    card.visible = order === pile;
+                    card.visible = row === pile;
 
-                    self.piles[pile][order] = card;
+                    self.piles[pile][row] = card;
                 }
             }
         };
@@ -54,7 +54,7 @@
                 : moveWasteToDeck();
         };
 
-        self.playTargetFoundation = function (foundation, cards) {
+        self.destinationFoundation = function (foundation, cards) {
             if (self.foundations[foundation].length == 0) {
                 if (cards[0].value.name === CardLibrary.Card.values.A.name) {
                     self.foundations[foundation].push(cards[0]);
@@ -72,7 +72,7 @@
             }
         };
 
-        self.playTargetPile = function (pile, cards) {
+        self.destinationPile = function (pile, cards) {
             if (self.piles[pile].length == 0) {
                 if (cards[0].value.name === CardLibrary.Card.values.K.name) {
                     self.piles[pile] = self.piles[pile].concat(cards);
@@ -90,17 +90,17 @@
             }
         };
 
-        self.playCardAnywhere = function (cards) {
+        self.destinationAnywhere = function (cards) {
             if (cards.length == 1) {
                 for (var foundation = 0; foundation < self.foundations.length; foundation++) {
-                    if (self.playTargetFoundation(foundation, cards)) {
+                    if (self.destinationFoundation(foundation, cards)) {
                         return true;
                     }
                 }
             }
 
             for (var pile = 0; pile < self.piles.length; pile++) {
-                if (self.playTargetPile(pile, cards)) {
+                if (self.destinationPile(pile, cards)) {
                     return true;
                 }
             }
@@ -113,7 +113,7 @@
                 if (destination(cards)) {
                     self.waste.pop();
 
-                    if (self.waste.length && !self.waste.last().visible) {
+                    if (self.waste.length) {
                         self.waste.last().visible = true;
                     }
                 }
@@ -158,16 +158,16 @@
         var self = this;
 
         var span = '<span></span>';
-        this.lastCard = ' [class*=card]:last';
+        self.lastCard = ' [class*=card]:last';
 
-        this.tableTopSelector;
-        this.tableBottomSelector;
-        this.deckSelector;
-        this.wasteSelector;
-        this.foundationSelector;
-        this.pileSelector;
-        this.onDrawStart = undefined;
-        this.onDrawEnd = undefined;
+        self.tableTopSelector;
+        self.tableBottomSelector;
+        self.deckSelector;
+        self.wasteSelector;
+        self.foundationSelector;
+        self.pileSelector;
+        self.onDrawStart = undefined;
+        self.onDrawEnd = undefined;
 
         var clearAllCards = function () {
             $('.card_None').empty();
@@ -213,9 +213,9 @@
             }
         };
 
-        this.draw = function (model) {
-            if (this.onDrawStart) {
-                this.onDrawStart();
+        self.draw = function (model) {
+            if (self.onDrawStart) {
+                self.onDrawStart();
             }
 
             clearAllCards();
@@ -225,8 +225,8 @@
             drawFoundations(model);
             drawPiles(model);
 
-            if (this.onDrawEnd) {
-                this.onDrawEnd();
+            if (self.onDrawEnd) {
+                self.onDrawEnd();
             }
         };
 
@@ -270,7 +270,7 @@
             }
         };
 
-        this.initialize = function (tableSelector, model) {
+        self.initialize = function (tableSelector, model) {
             initializeTable(tableSelector);
             initializeTableTop(model);
             initializeTableBottom(model);
@@ -282,13 +282,13 @@
         var view = new View();
         var count = 0;
 
-        var animationCard;
-        var animationFrom;
-        var animationTo;
-
         var dragSource;
         var dragNumber;
         var dragCard;
+
+        var animationCard;
+        var animationFrom;
+        var animationTo;
 
         var dragState = function (source, number, card) {
             dragSource = source;
@@ -321,7 +321,7 @@
                     .click(function () {
                         animationState(this);
 
-                        model.playWaste(undefined, undefined, model.playCardAnywhere);
+                        model.playWaste(undefined, undefined, model.destinationAnywhere);
                         view.draw(model);
                     });
             }
@@ -329,34 +329,36 @@
 
         var attachFoundationHandlers = function () {
             for (var foundation = 0; foundation < model.foundations.length; foundation++) {
+                $(view.foundationSelector + foundation + view.lastCard)
+                    .on('dragover', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    })
+                    .on('drop', function (e) {
+                        e.stopPropagation();
+
+                        animationState(this);
+
+                        var foundationNumber = this.getAttribute('data-foundation');
+                        var cardNumber = this.getAttribute('data-card');
+
+                        dragSource(dragNumber, dragCard, function (cards) {
+                            return model.destinationFoundation(foundationNumber, cards);
+                        });
+                        view.draw(model);
+                    });
+
                 if (model.foundations[foundation].length &&
                     model.foundations[foundation].last().visible) {
                     $(view.foundationSelector + foundation + view.lastCard)
                         .attr('draggable', 'true')
                         .on('dragstart', function (e) {
                             e.stopPropagation();
-                            
+
                             var foundationNumber = this.getAttribute('data-foundation');
                             var cardNumber = this.getAttribute('data-card');
 
                             dragState(model.playFoundation, foundationNumber, cardNumber);
-                        })
-                        .on('dragover', function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        })
-                        .on('drop', function (e) {
-                            e.stopPropagation();
-
-                            animationState(this);
-
-                            var foundationNumber = this.getAttribute('data-foundation');
-                            var cardNumber = this.getAttribute('data-card');
-
-                            dragSource(dragNumber, dragCard, function (cards) {
-                                return model.playTargetFoundation(foundationNumber, cards);
-                            });
-                            view.draw(model);
                         })
                         .click(function () {
                             animationState(this);
@@ -364,26 +366,7 @@
                             var foundationNumber = this.getAttribute('data-foundation');
                             var cardNumber = this.getAttribute('data-card');
 
-                            model.playFoundation(foundationNumber, cardNumber, model.playCardAnywhere);
-                            view.draw(model);
-                        });
-                }
-                else {
-                    $(view.foundationSelector + foundation + view.lastCard)
-                        .on('dragover', function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        })
-                        .on('drop', function (e) {
-                            e.stopPropagation();
-                            animationState(this);
-
-                            var foundationNumber = this.getAttribute('data-foundation');
-                            var cardNumber = undefined;
-
-                            dragSource(dragNumber, dragCard, function (cards) {
-                                return model.playTargetFoundation(foundationNumber, cards);
-                            });
+                            model.playFoundation(foundationNumber, cardNumber, model.destinationAnywhere);
                             view.draw(model);
                         });
                 }
@@ -392,34 +375,36 @@
 
         var attachPileHandlers = function () {
             for (var pile = 0; pile < model.piles.length; pile++) {
+                $(view.pileSelector + pile + view.lastCard)
+                    .on('dragover', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    })
+                    .on('drop', function (e) {
+                        e.stopPropagation();
+
+                        animationState(this);
+
+                        var pileNumber = this.getAttribute('data-pile');
+                        var cardNumber = this.getAttribute('data-card');
+
+                        dragSource(dragNumber, dragCard, function (cards) {
+                            return model.destinationPile(pileNumber, cards);
+                        });
+                        view.draw(model);
+                    });
+
                 for (var card = 0; card < model.piles[pile].length; card++) {
                     if (model.piles[pile][card].visible) {
                         $(view.pileSelector + pile + ' .' + model.piles[pile][card].class)
                             .attr('draggable', 'true')
                             .on('dragstart', function (e) {
-                                e.stopPropagation();                                
-                                
+                                e.stopPropagation();
+
                                 var pileNumber = this.getAttribute('data-pile');
                                 var cardNumber = this.getAttribute('data-card');
 
                                 dragState(model.playPile, pileNumber, cardNumber);
-                            })
-                            .on('dragover', function (e) {
-                                e.preventDefault();
-                                e.stopPropagation();   
-                            })
-                            .on('drop', function (e) {
-                                e.stopPropagation();   
-
-                                animationState(this);
-
-                                var pileNumber = this.getAttribute('data-pile');
-                                var cardNumber = this.getAttribute('data-card');
-
-                                dragSource(dragNumber, dragCard, function (cards) {
-                                    return model.playTargetPile(pileNumber, cards);
-                                });
-                                view.draw(model);
                             })
                             .click(function () {
                                 animationState(this);
@@ -427,31 +412,10 @@
                                 var pileNumber = this.getAttribute('data-pile');
                                 var cardNumber = this.getAttribute('data-card');
 
-                                model.playPile(pileNumber, cardNumber, model.playCardAnywhere);
+                                model.playPile(pileNumber, cardNumber, model.destinationAnywhere);
                                 view.draw(model);
                             });
                     }
-                }
-                 
-                if (!model.piles[pile].length) {
-                    $(view.pileSelector + pile + view.lastCard)
-                        .on('dragover', function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();   
-                        })
-                        .on('drop', function (e) {
-                            e.stopPropagation();   
-
-                            animationState(this);
-
-                            var pileNumber = this.getAttribute('data-pile');
-                            var cardNumber = undefined;
-
-                            dragSource(dragNumber, dragCard, function (cards) {
-                                return model.playTargetPile(pileNumber, cards);
-                            });
-                            view.draw(model);
-                        });
                 }
             }
         };
