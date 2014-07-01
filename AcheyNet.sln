@@ -1,64 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CardLibrary", "CardLibrary\", "{7BE89915-BB49-42ED-9873-31DBC454A4DF}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Home", ".\", "{7BE89915-BB49-42ED-9873-31DBC454A4DF}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/CardLibrary"
-		Debug.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\CardLibrary\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\CardLibrary\"
+		Debug.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/CardLibrary"
-		Release.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\CardLibrary\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\CardLibrary\"
+		Release.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "50872"
-	EndProjectSection
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Klondike", "Klondike\", "{8BBEA6D7-E8BB-4A06-95CE-60EEE91751D1}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/Klondike"
-		Debug.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\Klondike\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Klondike\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/Klondike"
-		Release.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\Klondike\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Klondike\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "50873"
-	EndProjectSection
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "MentalPoker", "MentalPoker\", "{2BF75A85-C294-44F5-9C2D-E316E38F83EA}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/MentalPoker"
-		Debug.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\MentalPoker\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\MentalPoker\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/MentalPoker"
-		Release.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\MentalPoker\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\MentalPoker\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "50874"
 	EndProjectSection
 EndProject
 Global
