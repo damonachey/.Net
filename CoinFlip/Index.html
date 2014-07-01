@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Coin Flip</title>
+</head>
+<body>
+    <p>Your PeerJS id is : <span id="pid"></span></p>
+    <p>
+        Connect to id:       
+        <input type="text" id="rid" placeholder="remote id" />
+        <input type="button" value="Connect" id="connect" />
+    </p>
+    <p id="actionButtons" style="display: none;">
+        <input type="button" value="Call Heads" id="callHeads" />
+        <input type="button" value="Call Tails" id="callTails" />
+        <input type="button" value="Flip Coin" id="flipCoin" />
+    </p>
+    <p id="messages">
+    </p>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://cdn.peerjs.com/0.3.8/peer.min.js"></script>
+    <script src="Scripts/xxtea.js"></script>
+
+    <script>
+        var connection;
+        var peer = new Peer({ key: '7vcobiwaytjiqkt9' });
+        var password;
+        var callEncrypted;
+        var flip;
+        var msg;
+
+        peer
+            .on('open', function (id) { $('#pid').text(id); })
+            .on('connection', function (conn) { connect(conn); });
+
+        $('#connect')
+            .on('click', function () {
+                var conn = peer.connect($('#rid').val());
+                conn
+                    .on('open', function () { connect(conn); })
+                    .on('error', function (err) { alert(err); });
+            });
+
+        $('#callHeads')
+            .on('click', function () { callCoin('heads'); });
+
+        $('#callTails')
+            .on('click', function () { callCoin('tails'); });
+
+
+        function callCoin(call) {
+            password = NewGuid();
+            callEncrypted = Tea.encrypt(call, password);
+            $('#messages').prepend('... calling ' + call + '<br/>');
+
+            msg = 'called: ' + callEncrypted;
+            connection.send(msg);
+            $('#messages').prepend('you: ' + msg + '<br/>');
+
+            $('#callHeads').attr('disabled', true);
+            $('#callTails').attr('disabled', true);
+            $('#flipCoin').attr('disabled', true);
+        }
+
+        $('#flipCoin')
+            .on('click', function () {
+                flip = coinFlip();
+                msg = 'coin flipped: ' + flip;
+                connection.send(msg);
+                $('#messages').prepend('you: ' + msg + '<br/>');
+            });
+
+        function connect(conn) {
+            connection = conn;
+
+            $('#actionButtons').show();
+            $('#messages').prepend('Now flipping with ' + connection.peer + '<br/>');
+
+            connection
+                .on('data', function (data) {
+                    $('#messages').prepend(connection.peer + ': ' + data + '<br/>');
+
+                    if (data.indexOf('called') > -1) {
+                        callEncrypted = data.substr(8);
+                        $('#callHeads').attr('disabled', true);
+                        $('#callTails').attr('disabled', true);
+                        $('#flipCoin').attr('disabled', false);
+                    }
+
+                    if (data.indexOf('flipped') > -1) {
+                        msg = 'password: ' + password;
+                        connection.send(msg);
+                        $('#messages').prepend('you: ' + msg + '<br/>');
+                        $('#callHeads').attr('disabled', false);
+                        $('#callTails').attr('disabled', false);
+                        $('#flipCoin').attr('disabled', false);
+                    }
+
+                    if (data.indexOf('password') > -1) {
+                        password = data.substr(10);
+                        var result = Tea.decrypt(callEncrypted, password);
+                        $('#messages').prepend(connection.peer + ' called: ' + result + '<br/>');
+
+                        msg = flip === result ? 'You win' : 'I win';
+
+                        connection.send(msg);
+                        $('#messages').prepend('you: ' + msg + '<br/>');
+                        $('#callHeads').attr('disabled', false);
+                        $('#callTails').attr('disabled', false);
+                        $('#flipCoin').attr('disabled', false);
+                    }
+                })
+                .on('close', function (err) {
+                    alert(connection.peer + ' has left');
+                });
+        }
+
+        function NewGuid() {
+            var sGuid = "";
+            for (var i = 0; i < 32; i++) {
+                sGuid += Math.floor(Math.random() * 0xF).toString(0xF);
+            }
+            return sGuid;
+        }
+
+        function coinFlip() {
+            return Math.random() >= 0.5 ? 'heads' : 'tails';
+        }
+    </script>
+</body>
+</html>
