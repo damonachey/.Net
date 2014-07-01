@@ -56,7 +56,7 @@
 
         self.destinationFoundation = function (foundation, cards) {
             if (self.foundations[foundation].length == 0) {
-                if (cards[0].value.name === CardLibrary.Card.values.A.name) {
+                if (cards[0].value.name === CardLibrary.Card.value.A.name) {
                     self.foundations[foundation].push(cards[0]);
                     return true;
                 }
@@ -74,7 +74,7 @@
 
         self.destinationPile = function (pile, cards) {
             if (self.piles[pile].length == 0) {
-                if (cards[0].value.name === CardLibrary.Card.values.K.name) {
+                if (cards[0].value.name === CardLibrary.Card.value.K.name) {
                     self.piles[pile] = self.piles[pile].concat(cards);
                     return true;
                 }
