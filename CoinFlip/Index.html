@@ -10,12 +10,14 @@
         <input type="text" id="rid" placeholder="remote id" />
         <input type="button" value="Connect" id="connect" />
     </p>
+
+    <p id="messages">
+    </p>
+
     <p id="actionButtons" style="display: none;">
         <input type="button" value="Call Heads" id="callHeads" />
         <input type="button" value="Call Tails" id="callTails" />
         <input type="button" value="Flip Coin" id="flipCoin" />
-    </p>
-    <p id="messages">
     </p>
 
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -23,20 +25,31 @@
     <script src="Scripts/xxtea.js"></script>
 
     <script>
+        "use strict";
         var connection;
         var peer = new Peer({ key: '7vcobiwaytjiqkt9' });
         var password;
         var callEncrypted;
         var flip;
-        var msg;
+        var me;
+        var them;
 
         peer
             .on('open', function (id) { $('#pid').text(id); })
-            .on('connection', function (conn) { connect(conn); });
+            .on('connection', function (conn) {
+                me = 'alice';
+                them = 'bob';
+                local('You are ' + me);
+                connect(conn);
+            });
 
         $('#connect')
             .on('click', function () {
                 var conn = peer.connect($('#rid').val());
+                me = 'bob';
+                them = 'alice';
+                local('You are ' + me);
+
                 conn
                     .on('open', function () { connect(conn); })
                     .on('error', function (err) { alert(err); });
@@ -50,13 +63,12 @@
 
 
         function callCoin(call) {
+            local('... calling ' + call);
+
             password = NewGuid();
             callEncrypted = Tea.encrypt(call, password);
-            $('#messages').prepend('... calling ' + call + '<br/>');
 
-            msg = 'called: ' + callEncrypted;
-            connection.send(msg);
-            $('#messages').prepend('you: ' + msg + '<br/>');
+            send('called: ' + callEncrypted);
 
             $('#callHeads').attr('disabled', true);
             $('#callTails').attr('disabled', true);
@@ -66,20 +78,36 @@
         $('#flipCoin')
             .on('click', function () {
                 flip = coinFlip();
-                msg = 'coin flipped: ' + flip;
-                connection.send(msg);
-                $('#messages').prepend('you: ' + msg + '<br/>');
+                send('flipped: ' + flip);
             });
+
+        function local(msg) {
+            $('#messages').append(msg + '<br/>');
+            window.scrollTo(0, document.body.scrollHeight);
+
+            if (msg.indexOf('wins') > -1) {
+                $('#messages').append('---------------------<br/>');
+            }
+        }
+
+        function send(msg) {
+            connection.send(msg);
+            local(me + ': ' + msg);
+        }
+
+        function received(msg) {
+            local(them + ': ' + msg);
+        }
 
         function connect(conn) {
             connection = conn;
 
             $('#actionButtons').show();
-            $('#messages').prepend('Now flipping with ' + connection.peer + '<br/>');
+            local('Now flipping with ' + them);
 
             connection
                 .on('data', function (data) {
-                    $('#messages').prepend(connection.peer + ': ' + data + '<br/>');
+                    received(data);
 
                     if (data.indexOf('called') > -1) {
                         callEncrypted = data.substr(8);
@@ -89,9 +117,7 @@
                     }
 
                     if (data.indexOf('flipped') > -1) {
-                        msg = 'password: ' + password;
-                        connection.send(msg);
-                        $('#messages').prepend('you: ' + msg + '<br/>');
+                        send('password: ' + password);
                         $('#callHeads').attr('disabled', false);
                         $('#callTails').attr('disabled', false);
                         $('#flipCoin').attr('disabled', false);
@@ -100,19 +126,16 @@
                     if (data.indexOf('password') > -1) {
                         password = data.substr(10);
                         var result = Tea.decrypt(callEncrypted, password);
-                        $('#messages').prepend(connection.peer + ' called: ' + result + '<br/>');
+                        received(' called: ' + result);
 
-                        msg = flip === result ? 'You win' : 'I win';
-
-                        connection.send(msg);
-                        $('#messages').prepend('you: ' + msg + '<br/>');
+                        send((flip === result ? them : me) + ' wins');
                         $('#callHeads').attr('disabled', false);
                         $('#callTails').attr('disabled', false);
                         $('#flipCoin').attr('disabled', false);
                     }
                 })
                 .on('close', function (err) {
-                    alert(connection.peer + ' has left');
+                    alert(them + ' has left');
                 });
         }
 
