@@ -17,7 +17,7 @@
     <p id="actionButtons" style="display: none;">
         <input type="button" value="Call Heads" id="callHeads" />
         <input type="button" value="Call Tails" id="callTails" />
-        <input type="button" value="Flip Coin" id="flipCoin" />
+        <input type="button" value="Flip Coin" id="flipCoin" disabled="true"/>
     </p>
 
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -120,7 +120,7 @@
                         send('password: ' + password);
                         $('#callHeads').attr('disabled', false);
                         $('#callTails').attr('disabled', false);
-                        $('#flipCoin').attr('disabled', false);
+                        $('#flipCoin').attr('disabled', true);
                     }
 
                     if (data.indexOf('password') > -1) {
@@ -131,7 +131,7 @@
                         send((flip === result ? them : me) + ' wins');
                         $('#callHeads').attr('disabled', false);
                         $('#callTails').attr('disabled', false);
-                        $('#flipCoin').attr('disabled', false);
+                        $('#flipCoin').attr('disabled', true);
                     }
                 })
                 .on('close', function (err) {
