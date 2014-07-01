@@ -4,7 +4,7 @@
         var self = this;
         var cards = [];
 
-        this.shuffle = function () {
+        self.shuffle = function () {
             for (var i = cards.length - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
                 var temp = cards[i];
@@ -15,24 +15,24 @@
             return this;
         };
 
-        Object.defineProperty(this, 'size', {
+        Object.defineProperty(self, 'size', {
             get: function () {
                 return cards.length;
             }
         });
 
-        this.draw = function () {
+        self.draw = function () {
             return cards.shift();
         };
 
-        this.add = function (card) {
+        self.add = function (card) {
             cards.push(card);
         }
 
         var initialize = function (cards) {
-            for (var suit in ns.Card.suits) {
-                for (var value in ns.Card.values) {
-                    self.add(new ns.Card(ns.Card.values[value].name, ns.Card.suits[suit].name));
+            for (var suit in ns.Card.suit) {
+                for (var value in ns.Card.value) {
+                    self.add(new ns.Card(ns.Card.value[value].name, ns.Card.suit[suit].name));
                 }
             }
 

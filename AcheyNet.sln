@@ -1,44 +1,64 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CardLibrary", "CardLibrary\", "{B4C4F0E6-4F8A-4131-86F3-1AE70839E24A}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CardLibrary", "CardLibrary\", "{7BE89915-BB49-42ED-9873-31DBC454A4DF}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/CardLibrary"
-		Debug.AspNetCompiler.PhysicalPath = "CardLibrary\"
+		Debug.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\CardLibrary\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\CardLibrary\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/CardLibrary"
-		Release.AspNetCompiler.PhysicalPath = "CardLibrary\"
+		Release.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\CardLibrary\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\CardLibrary\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "64347"
+		VWDPort = "50872"
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Klondike", "Klondike\", "{D748D868-0E22-4F24-93A2-0EECD3FA667E}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Klondike", "Klondike\", "{8BBEA6D7-E8BB-4A06-95CE-60EEE91751D1}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/Klondike"
-		Debug.AspNetCompiler.PhysicalPath = "Klondike\"
+		Debug.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\Klondike\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Klondike\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/Klondike"
-		Release.AspNetCompiler.PhysicalPath = "Klondike\"
+		Release.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\Klondike\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Klondike\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "64348"
+		VWDPort = "50873"
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "MentalPoker", "MentalPoker\", "{2BF75A85-C294-44F5-9C2D-E316E38F83EA}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/MentalPoker"
+		Debug.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\MentalPoker\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\MentalPoker\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/MentalPoker"
+		Release.AspNetCompiler.PhysicalPath = "D:\Public\Projects\AcheyNet\MentalPoker\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\MentalPoker\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "50874"
 	EndProjectSection
 EndProject
 Global
@@ -46,10 +66,12 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B4C4F0E6-4F8A-4131-86F3-1AE70839E24A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4C4F0E6-4F8A-4131-86F3-1AE70839E24A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D748D868-0E22-4F24-93A2-0EECD3FA667E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D748D868-0E22-4F24-93A2-0EECD3FA667E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE89915-BB49-42ED-9873-31DBC454A4DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE89915-BB49-42ED-9873-31DBC454A4DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BBEA6D7-E8BB-4A06-95CE-60EEE91751D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BBEA6D7-E8BB-4A06-95CE-60EEE91751D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BF75A85-C294-44F5-9C2D-E316E38F83EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BF75A85-C294-44F5-9C2D-E316E38F83EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

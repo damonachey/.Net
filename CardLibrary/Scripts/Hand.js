@@ -33,7 +33,7 @@
         return str + ' ' + this.rank.name;
     };
 
-    ns.Hand.ranks = {
+    ns.Hand.rank = {
         RoyalFlush: { name: 'RoyalFlush' },
         StraightFlush: { name: 'StraightFlush' },
         FourOfAKind: { name: 'FourOfAKind' },
@@ -110,7 +110,7 @@
         };
 
         var isRoyalFlush = function (cards) {
-            return hasFlush(cards) && hasStraight(cards) && hand.getHighCard().value.name === ns.Card.values.A.name;
+            return hasFlush(cards) && hasStraight(cards) && hand.getHighCard().value.name === ns.Card.value.A.name;
         };
 
         var isStraightFlush = function (cards) {
@@ -146,17 +146,17 @@
         };
 
         var cards = hand.cards;
-        if (cards.length === 0) return ns.Hand.ranks.Unknown;
-        if (isRoyalFlush(cards)) return ns.Hand.ranks.RoyalFlush;
-        if (isStraightFlush(cards)) return ns.Hand.ranks.StraightFlush;
-        if (isFourOfAKind(cards)) return ns.Hand.ranks.FourOfAKind;
-        if (isFullHouse(cards)) return ns.Hand.ranks.FullHouse;
-        if (isFlush(cards)) return ns.Hand.ranks.Flush;
-        if (isStraight(cards)) return ns.Hand.ranks.Straight;
-        if (isThreeOfAKind(cards)) return ns.Hand.ranks.ThreeOfAKind;
-        if (isTwoPair(cards)) return ns.Hand.ranks.TwoPair;
-        if (isPair(cards)) return ns.Hand.ranks.Pair;
+        if (cards.length === 0) return ns.Hand.rank.Unknown;
+        if (isRoyalFlush(cards)) return ns.Hand.rank.RoyalFlush;
+        if (isStraightFlush(cards)) return ns.Hand.rank.StraightFlush;
+        if (isFourOfAKind(cards)) return ns.Hand.rank.FourOfAKind;
+        if (isFullHouse(cards)) return ns.Hand.rank.FullHouse;
+        if (isFlush(cards)) return ns.Hand.rank.Flush;
+        if (isStraight(cards)) return ns.Hand.rank.Straight;
+        if (isThreeOfAKind(cards)) return ns.Hand.rank.ThreeOfAKind;
+        if (isTwoPair(cards)) return ns.Hand.rank.TwoPair;
+        if (isPair(cards)) return ns.Hand.rank.Pair;
 
-        return ns.Hand.ranks.HighCard;
+        return ns.Hand.rank.HighCard;
     };
 }(window.CardLibrary = window.CardLibrary || {}));

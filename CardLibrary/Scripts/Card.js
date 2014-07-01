@@ -1,9 +1,9 @@
 ﻿"use strict";
 (function (ns) {
     var getSuitByValue = function (value) {
-        for (var suit in ns.Card.suits) {
-            if (ns.Card.suits[suit].value === value) {
-                return ns.Card.suits[suit];
+        for (var suit in ns.Card.suit) {
+            if (ns.Card.suit[suit].value === value) {
+                return ns.Card.suit[suit];
             }
         }
     };
@@ -21,10 +21,10 @@
             suitName = suitName.name;
         }
 
-        value = ns.Card.values[valueName];
+        value = ns.Card.value[valueName];
 
-        if (ns.Card.suits.hasOwnProperty(suitName)) {
-            suit = ns.Card.suits[suitName];
+        if (ns.Card.suit.hasOwnProperty(suitName)) {
+            suit = ns.Card.suit[suitName];
         }
         else {
             suit = getSuitByValue(suitName);
@@ -42,14 +42,14 @@
 
     ns.Card.highAce = function (high) {
         if (high)
-            ns.Card.values.A.value = 14;
+            ns.Card.value.A.value = 14;
         else
-            ns.Card.values.A.value = 1;
+            ns.Card.value.A.value = 1;
 
-        return ns.Card.values.A.value > ns.Card.values.K.value;
+        return ns.Card.value.A.value > ns.Card.value.K.value;
     };
 
-    ns.Card.values = {
+    ns.Card.value = {
         2: { name: '2', value: 2 },
         3: { name: '3', value: 3 },
         4: { name: '4', value: 4 },
@@ -71,7 +71,7 @@
         None: { name: 'None', value: undefined }
     };
 
-    ns.Card.suits = {
+    ns.Card.suit = {
         Spade: { name: 'Spade', value: 'S', color: 'black' },
         Diamond: { name: 'Diamond', value: 'D', color: 'red' },
         Club: { name: 'Club', value: 'C', color: 'black' },

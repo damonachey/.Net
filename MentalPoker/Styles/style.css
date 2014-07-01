@@ -1,0 +1,9 @@
+﻿body, html {
+    background-color: white;
+    margin: 0;
+    height: 100%;
+}
+
+ul {
+    display: inline-block;
+}
