@@ -304,10 +304,11 @@
         };
 
         var attachDeckHandler = function () {
-            $(view.deckSelector).click(function () {
-                model.dealWaste();
-                view.draw(model);
-            });
+            $(view.deckSelector)
+                .on('click', function () {
+                    model.dealWaste();
+                    view.draw(model);
+                });
         }
 
         var attachWasteHandler = function () {
@@ -318,7 +319,7 @@
                         e.stopPropagation();
                         dragState(model.playWaste);
                     })
-                    .click(function () {
+                    .on('click', function () {
                         animationState(this);
 
                         model.playWaste(undefined, undefined, model.destinationAnywhere);
@@ -360,7 +361,7 @@
 
                             dragState(model.playFoundation, foundationNumber, cardNumber);
                         })
-                        .click(function () {
+                        .on('click', function () {
                             animationState(this);
 
                             var foundationNumber = this.getAttribute('data-foundation');
@@ -406,7 +407,7 @@
 
                                 dragState(model.playPile, pileNumber, cardNumber);
                             })
-                            .click(function () {
+                            .on('click', function () {
                                 animationState(this);
 
                                 var pileNumber = this.getAttribute('data-pile');

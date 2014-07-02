@@ -126,7 +126,7 @@
                     if (data.indexOf('password') > -1) {
                         password = data.substr(10);
                         var result = Tea.decrypt(callEncrypted, password);
-                        received(' called: ' + result);
+                        local('...' + them + ' called: ' + result);
 
                         send((flip === result ? them : me) + ' wins');
                         $('#callHeads').attr('disabled', false);
