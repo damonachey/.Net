@@ -1,166 +1,179 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Coin Flip</title>
-    <style>
-        #messages {
-            height: 200px; 
-            width: 600px;
-            border: solid;
-            border-width: 1px;
-            overflow-y: scroll;
-        }
-    </style>
-</head>
-<body>
-    <p>Your PeerJS id is : <span id="pid"></span></p>
-    <p>
-        Connect to id:       
-        <input type="text" id="rid" placeholder="remote id" />
-        <input type="button" value="Connect" id="connect" />
-    </p>
+    
+    <head>
+        <title>Coin Flip</title>
+        <style>
+            #messages {
+                height: 200px;
+                width: 600px;
+                border: solid;
+                border-width: 1px;
+                overflow-y: scroll;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <p>Your PeerJS id is :
+            <span id="pid"></span>
+        </p>
+        <p>Connect to id:
+            <input type="text" id="rid" placeholder="remote id" />
+            <input type="button" value="Connect" id="connect" />
+        </p>
+        <p id="messages"></p>
+        <p id="actionButtons" style="display: none;">
+            <input type="button" value="Call Heads" id="callHeads" />
+            <input type="button" value="Call Tails" id="callTails" />
+            <input type="button" value="Flip Coin" id="flipCoin" disabled="true" />
+        </p>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="http://cdn.peerjs.com/0.3.8/peer.min.js"></script>
+        <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js"></script>
+        <script>
+            "use strict";
+            var connection;
+            var peer = new Peer({
+                key: '7vcobiwaytjiqkt9'
+            });
+            var nonce;
+            var callHash;
+            var call;
+            var flip;
+            var me;
+            var them;
 
-    <p id="messages">
-    </p>
-
-    <p id="actionButtons" style="display: none;">
-        <input type="button" value="Call Heads" id="callHeads" />
-        <input type="button" value="Call Tails" id="callTails" />
-        <input type="button" value="Flip Coin" id="flipCoin" disabled="true"/>
-    </p>
-
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="http://cdn.peerjs.com/0.3.8/peer.min.js"></script>
-    <script src="Scripts/xxtea.js"></script>
-
-    <script>
-        "use strict";
-        var connection;
-        var peer = new Peer({ key: '7vcobiwaytjiqkt9' });
-        var password;
-        var callEncrypted;
-        var flip;
-        var me;
-        var them;
-
-        peer
-            .on('open', function (id) { $('#pid').text(id); })
-            .on('connection', function (conn) {
+            peer.on('open', function(id) {
+                $('#pid').text(id);
+            }).on('connection', function(conn) {
                 me = 'alice';
                 them = 'bob';
                 local('You are ' + me);
                 connect(conn);
             });
 
-        $('#connect')
-            .on('click', function () {
+            $('#connect').on('click', function() {
                 var conn = peer.connect($('#rid').val());
                 me = 'bob';
                 them = 'alice';
                 local('You are ' + me);
 
-                conn
-                    .on('open', function () { connect(conn); })
-                    .on('error', function (err) { alert(err); });
+                conn.on('open', function() {
+                    connect(conn);
+                }).on('error', function(err) {
+                    alert(err);
+                });
             });
 
-        $('#callHeads')
-            .on('click', function () { callCoin('heads'); });
+            $('#callHeads').on('click', function() {
+                callCoin('heads');
+            });
 
-        $('#callTails')
-            .on('click', function () { callCoin('tails'); });
+            $('#callTails').on('click', function() {
+                callCoin('tails');
+            });
 
 
-        function callCoin(call) {
-            local('... calling ' + call);
+            function callCoin(callValue) {
+                call = callValue;
+                local('... calling ' + call);
 
-            password = NewGuid();
-            callEncrypted = Tea.encrypt(call, password);
+                nonce = NewGuid();
+                callHash = CryptoJS.SHA1(call + nonce);
 
-            send('called: ' + callEncrypted);
+                send('called: ' + callHash);
 
-            $('#callHeads').attr('disabled', true);
-            $('#callTails').attr('disabled', true);
-            $('#flipCoin').attr('disabled', true);
-        }
+                $('#callHeads').attr('disabled', true);
+                $('#callTails').attr('disabled', true);
+                $('#flipCoin').attr('disabled', true);
+            }
 
-        $('#flipCoin')
-            .on('click', function () {
+            $('#flipCoin').on('click', function() {
                 flip = coinFlip();
                 send('flipped: ' + flip);
             });
 
-        function local(msg) {
-            $('#messages').append(msg + '<br/>');
-            window.scrollTo(0, document.body.scrollHeight);
+            function local(msg) {
+                $('#messages').append(msg + '<br/>');
+                window.scrollTo(0, document.body.scrollHeight);
 
-            if (msg.indexOf('wins') > -1) {
-                $('#messages').append('---------------------<br/>');
+                if (msg.indexOf('wins') > -1) {
+                    $('#messages').append('<hr />');
+                }
+
+                $('#messages').scrollTop(10000);
             }
-            
-            $('#messages').scrollTop(10000);
-        }
 
-        function send(msg) {
-            connection.send(msg);
-            local(me + ': ' + msg);
-        }
+            function send(msg) {
+                connection.send(msg);
+                local(me + ': ' + msg);
+            }
 
-        function received(msg) {
-            local(them + ': ' + msg);
-        }
+            function received(msg) {
+                local(them + ': ' + msg);
+            }
 
-        function connect(conn) {
-            connection = conn;
+            function connect(conn) {
+                connection = conn;
 
-            $('#actionButtons').show();
-            local('Now flipping with ' + them);
+                $('#actionButtons').show();
+                local('Now flipping with ' + them);
 
-            connection
-                .on('data', function (data) {
+                connection.on('data', function(data) {
                     received(data);
 
                     if (data.indexOf('called') > -1) {
-                        callEncrypted = data.substr(8);
+                        callHash = data.substr(8);
                         $('#callHeads').attr('disabled', true);
                         $('#callTails').attr('disabled', true);
                         $('#flipCoin').attr('disabled', false);
                     }
 
                     if (data.indexOf('flipped') > -1) {
-                        send('password: ' + password);
+                        send('call: ' + call + ' nonce: ' + nonce);
                         $('#callHeads').attr('disabled', false);
                         $('#callTails').attr('disabled', false);
                         $('#flipCoin').attr('disabled', true);
                     }
 
-                    if (data.indexOf('password') > -1) {
-                        password = data.substr(10);
-                        var result = Tea.decrypt(callEncrypted, password);
-                        local('...' + them + ' called: ' + result);
+                    if (data.indexOf('nonce') > -1) {
+                        call = data.substr(6, 5);
+                        nonce = data.substr(19);
+                        
+                        var result = CryptoJS.SHA1(call + nonce).toString();
+                        var verified = (result === callHash);
 
-                        send((flip === result ? them : me) + ' wins');
+                        if (verified) {
+                            local('...' + them + ' called: ' + call + ' verified: ' + verified);
+
+                            send((flip === call ? them : me) + ' wins');
+                        }
+                        else {
+                            send("Cheater!");
+                        }
+
                         $('#callHeads').attr('disabled', false);
                         $('#callTails').attr('disabled', false);
                         $('#flipCoin').attr('disabled', true);
                     }
-                })
-                .on('close', function (err) {
+                }).on('close', function(err) {
                     alert(them + ' has left');
                 });
-        }
-
-        function NewGuid() {
-            var sGuid = "";
-            for (var i = 0; i < 32; i++) {
-                sGuid += Math.floor(Math.random() * 0xF).toString(0xF);
             }
-            return sGuid;
-        }
 
-        function coinFlip() {
-            return Math.random() >= 0.5 ? 'heads' : 'tails';
-        }
-    </script>
-</body>
+            function NewGuid() {
+                var sGuid = "";
+                for (var i = 0; i < 32; i++) {
+                    sGuid += Math.floor(Math.random() * 0xF).toString(0xF);
+                }
+                return sGuid;
+            }
+
+            function coinFlip() {
+                return Math.random() >= 0.5 ? 'heads' : 'tails';
+            }
+        </script>
+    </body>
+
 </html>
