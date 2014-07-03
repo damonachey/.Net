@@ -1,7 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Coin Flip</title>
+    <style>
+        #messages {
+            height: 200px; 
+            width: 600px;
+            border: solid;
+            border-width: 1px;
+            overflow-y: scroll;
+        }
+    </style>
 </head>
 <body>
     <p>Your PeerJS id is : <span id="pid"></span></p>
@@ -88,6 +97,8 @@
             if (msg.indexOf('wins') > -1) {
                 $('#messages').append('---------------------<br/>');
             }
+            
+            $('#messages').scrollTop(10000);
         }
 
         function send(msg) {
