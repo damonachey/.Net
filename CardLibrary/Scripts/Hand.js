@@ -1,6 +1,6 @@
 ﻿"use strict";
-(function (ns) {
-    ns.Hand = function () {
+(function (CL) {
+    CL.Hand = function () {
         var _cards = [];
 
         this.add = function (card) {
@@ -23,17 +23,17 @@
         });
     }
 
-    ns.Hand.prototype.toString = function () {
+    CL.Hand.prototype.toString = function () {
         var str = this
             .cards
-            .sort(ns.Card.cardCompare)
+            .sort(CL.Card.cardCompare)
             .map(function (card) { return card.value.name + card.suit.value; })
             .join(' ');
 
         return str + ' ' + this.rank.name;
     };
 
-    ns.Hand.rank = {
+    CL.Hand.rank = {
         RoyalFlush: { name: 'RoyalFlush' },
         StraightFlush: { name: 'StraightFlush' },
         FourOfAKind: { name: 'FourOfAKind' },
@@ -47,13 +47,13 @@
         Unknown: { name: 'Unknown' }
     };
 
-    ns.Hand.prototype.getHighCard = function () {
+    CL.Hand.prototype.getHighCard = function () {
         return this
             .cards
-            .sort(ns.Card.cardCompare)[this.cards.length - 1];
+            .sort(CL.Card.cardCompare)[this.cards.length - 1];
     };
 
-    ns.Hand.prototype.getRank = function () {
+    CL.Hand.prototype.getRank = function () {
         var hand = this;
 
         var groupCards = function (cards) {
@@ -77,7 +77,7 @@
         };
 
         var hasStraight = function (cards) {
-            cards = cards.sort(ns.Card.cardCompare);
+            cards = cards.sort(CL.Card.cardCompare);
 
             var first = cards[0].value.value;
 
@@ -110,7 +110,7 @@
         };
 
         var isRoyalFlush = function (cards) {
-            return hasFlush(cards) && hasStraight(cards) && hand.getHighCard().value.name === ns.Card.value.A.name;
+            return hasFlush(cards) && hasStraight(cards) && hand.getHighCard().value.name === CL.Card.value.A.name;
         };
 
         var isStraightFlush = function (cards) {
@@ -146,17 +146,17 @@
         };
 
         var cards = hand.cards;
-        if (cards.length === 0) return ns.Hand.rank.Unknown;
-        if (isRoyalFlush(cards)) return ns.Hand.rank.RoyalFlush;
-        if (isStraightFlush(cards)) return ns.Hand.rank.StraightFlush;
-        if (isFourOfAKind(cards)) return ns.Hand.rank.FourOfAKind;
-        if (isFullHouse(cards)) return ns.Hand.rank.FullHouse;
-        if (isFlush(cards)) return ns.Hand.rank.Flush;
-        if (isStraight(cards)) return ns.Hand.rank.Straight;
-        if (isThreeOfAKind(cards)) return ns.Hand.rank.ThreeOfAKind;
-        if (isTwoPair(cards)) return ns.Hand.rank.TwoPair;
-        if (isPair(cards)) return ns.Hand.rank.Pair;
+        if (cards.length === 0) return CL.Hand.rank.Unknown;
+        if (isRoyalFlush(cards)) return CL.Hand.rank.RoyalFlush;
+        if (isStraightFlush(cards)) return CL.Hand.rank.StraightFlush;
+        if (isFourOfAKind(cards)) return CL.Hand.rank.FourOfAKind;
+        if (isFullHouse(cards)) return CL.Hand.rank.FullHouse;
+        if (isFlush(cards)) return CL.Hand.rank.Flush;
+        if (isStraight(cards)) return CL.Hand.rank.Straight;
+        if (isThreeOfAKind(cards)) return CL.Hand.rank.ThreeOfAKind;
+        if (isTwoPair(cards)) return CL.Hand.rank.TwoPair;
+        if (isPair(cards)) return CL.Hand.rank.Pair;
 
-        return ns.Hand.rank.HighCard;
+        return CL.Hand.rank.HighCard;
     };
 }(window.CardLibrary = window.CardLibrary || {}));

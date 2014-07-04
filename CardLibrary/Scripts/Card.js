@@ -1,14 +1,14 @@
 ﻿"use strict";
-(function (ns) {
+(function (CL) {
     var getSuitByValue = function (value) {
-        for (var suit in ns.Card.suit) {
-            if (ns.Card.suit[suit].value === value) {
-                return ns.Card.suit[suit];
+        for (var suit in CL.Card.suit) {
+            if (CL.Card.suit[suit].value === value) {
+                return CL.Card.suit[suit];
             }
         }
     };
 
-    ns.Card = function (valueName, suitName) {
+    CL.Card = function (valueName, suitName) {
         var value = undefined;
         var suit = undefined;
         this.visible = true;
@@ -21,10 +21,10 @@
             suitName = suitName.name;
         }
 
-        value = ns.Card.value[valueName];
+        value = CL.Card.value[valueName];
 
-        if (ns.Card.suit.hasOwnProperty(suitName)) {
-            suit = ns.Card.suit[suitName];
+        if (CL.Card.suit.hasOwnProperty(suitName)) {
+            suit = CL.Card.suit[suitName];
         }
         else {
             suit = getSuitByValue(suitName);
@@ -40,16 +40,16 @@
         Object.defineProperty(this, 'class', { get: function () { return 'card_' + (this.visible ? value.name + suit.value : 'Back'); } });
     };
 
-    ns.Card.highAce = function (high) {
+    CL.Card.highAce = function (high) {
         if (high)
-            ns.Card.value.A.value = 14;
+            CL.Card.value.A.value = 14;
         else
-            ns.Card.value.A.value = 1;
+            CL.Card.value.A.value = 1;
 
-        return ns.Card.value.A.value > ns.Card.value.K.value;
+        return CL.Card.value.A.value > CL.Card.value.K.value;
     };
 
-    ns.Card.value = {
+    CL.Card.value = {
         2: { name: '2', value: 2 },
         3: { name: '3', value: 3 },
         4: { name: '4', value: 4 },
@@ -65,20 +65,20 @@
         A: { name: 'A', value: 14 }
     };
 
-    ns.Card.special = {
+    CL.Card.special = {
         Joker: { name: 'Joker', value: 0 },
         Back: { name: 'Back', value: undefined },
         None: { name: 'None', value: undefined }
     };
 
-    ns.Card.suit = {
+    CL.Card.suit = {
         Spade: { name: 'Spade', value: 'S', color: 'black' },
         Diamond: { name: 'Diamond', value: 'D', color: 'red' },
         Club: { name: 'Club', value: 'C', color: 'black' },
         Heart: { name: 'Heart', value: 'H', color: 'red' }
     };
 
-    ns.Card.cardCompare = function (a, b) {
+    CL.Card.cardCompare = function (a, b) {
         return a.value.value - b.value.value;
     };
 }(window.CardLibrary = window.CardLibrary || {}));

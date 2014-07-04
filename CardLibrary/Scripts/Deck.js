@@ -1,6 +1,6 @@
 ﻿"use strict";
-(function (ns) {
-    ns.Deck = function () {
+(function (CL) {
+    CL.Deck = function () {
         var self = this;
         var cards = [];
 
@@ -30,9 +30,9 @@
         }
 
         var initialize = function (cards) {
-            for (var suit in ns.Card.suit) {
-                for (var value in ns.Card.value) {
-                    self.add(new ns.Card(ns.Card.value[value].name, ns.Card.suit[suit].name));
+            for (var suit in CL.Card.suit) {
+                for (var value in CL.Card.value) {
+                    self.add(new CL.Card(CL.Card.value[value].name, CL.Card.suit[suit].name));
                 }
             }
 
